@@ -9,27 +9,53 @@
 
 import React, { PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import cx from 'classnames';
 import Layout from '../../components/Layout';
 import s from './Home.css';
 
 function Home({ news }) {
+
+  var store = {
+    state: "in progress",
+    users: {
+      "userId1": {
+        name: "user1",
+        selectedCard: 1,
+      },
+      "userId2": {
+        name: "user2",
+        selectedCard: 2
+      },
+      "userId3": {
+        name: "user3",
+        selectedCard: null
+      }
+    }
+  }
+  store.currentUser = store.userId1;
+
   return (
     <Layout>
       <div className={s.root}>
-        <div className={s.container}>
-          <h1 className={s.title}>React.js News</h1>
-          <ul className={s.news}>
-            {news.map((item, index) => (
-              <li key={index} className={s.newsItem}>
-                <a href={item.link} className={s.newsTitle}>{item.title}</a>
-                <span
-                  className={s.newsDesc}
-                  dangerouslySetInnerHTML={{ __html: item.contentSnippet }}
-                />
-              </li>
-            ))}
-          </ul>
+        <div className={s.userList}>
+          {Object.keys(store.users)
+            .map( userId => store.users[userId] )
+            .map( user => ( user.name ) ).join(", ") }
         </div>
+        <div className={s.selectedCards}>
+          {Object.keys(store.users)
+            .map( userId => store.users[userId] )
+            .filter(
+              user => ( user.selectedCard ) )
+            .map(
+              user => ( <div className={cx({
+                [s.card]: true,
+                [s["card-faceUp"]]: store.state === "done" || user === store.currentUser
+              })} >
+                {user.selectedCard}
+              </div> )
+            ) }
+        </div> 
       </div>
     </Layout>
   );
