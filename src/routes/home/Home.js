@@ -11,12 +11,23 @@ import React, { PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Layout from '../../components/Layout';
 import s from './Home.css';
+import ScrumCard from '../../components/ScrumCard/ScrumCard';
+
+
+
 
 function Home({ news }) {
+  const scores = [1,2,3,4,5,6,7,8,9,10];
+  var cards = scores.map(function(score){
+    return <ScrumCard>{score}</ScrumCard>
+  })
+
   return (
     <Layout>
       <div className={s.root}>
         <div className={s.container}>
+          {cards}
+
           <h1 className={s.title}>React.js News</h1>
           <ul className={s.news}>
             {news.map((item, index) => (
